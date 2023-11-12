@@ -13,6 +13,12 @@ def model_beta(x, a, Np, alpha, beta):
     func = Np * (1 - ff * ((1 - ((alpha + beta) / alpha) * 2*a*x)/(Np**2-Np))**(Np - 1))
     return func
 
+def model_dirichlet(x, a, Np, alpha):
+    # ディリクレ分布の確率密度関数
+    den = stats.dirichlet.pdf(a, alpha)
+    ff = integrate.quad(den, 0, a)[0]
+    func = Np * (1 - ff * ((1 - (alpha + 1) * 2*a*x)/(Np**2-Np))**(Np - 1))
+    return func
 
 # 初期値を決定するアルゴリズム
 def initial_params(edge, node):
@@ -42,3 +48,21 @@ def calc_M(Np, kappa):
 
 def calc_kappa(Np, M, alpha, beta):
     return ((alpha + beta) / alpha)**2 * (2 * M / (Np * (Np - 1)))
+
+def initial_params_for_dirichlet(edge, node):
+    # まずはNpを推定する
+    # Npの初期値を決定する
+    # Npの初期値は、ノード数の平均値とする
+    Np = max(node)
+
+    # Npの初期値を用いて、alphaとbetaの初期値を決定する
+    # alphaとbetaの初期値は、Npの値を用いて、ノード数の平均値とする
+    alpha = random.uniform(0, 1)
+    alpha = round(alpha, 2)
+
+    # aの初期値を決定する
+    a = random.uniform(0, 1)
+    a = round(a, 2)
+    # 1次元のarrayに変換
+    a = np.array([a])
+    return a, Np, alpha
