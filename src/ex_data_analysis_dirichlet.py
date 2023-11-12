@@ -38,8 +38,8 @@ node_right, edge_right, timestamp_right = pre.return_nm(df_right)
 
 # Npを推定する
 start = time.time()
-initial_params = md.initial_params_for_dirichlet(edge_right, node_right)
-params, _ = optimize.curve_fit(md.model_dirichlet, xdata=edge_right, ydata=node_right, p0=initial_params)
+# initial_params = md.initial_params_for_dirichlet(edge_right, node_right)
+params, _ = optimize.curve_fit(md.model_dirichlet, xdata=edge_right, ydata=node_right, p0=[[0.5,0.7], 0.5])
 
 Np = params[1]
 kappa = []
@@ -47,7 +47,7 @@ N_fit = []
 M_fit = []
 
 for i in range(len(edge_right)):
-    kappa.append(md.calc_kappa(Np, edge_right[i], params[2], params[3]))
+    kappa.append(md.calc_kappa(Np, edge_right[i]))
 
 for i in range(len(edge_right)):
     N_fit.append(md.calc_N(Np, kappa[i]))
@@ -74,9 +74,9 @@ print("+------------------+")
 print("+------------------+")
 print("| Initial values   |")
 print("+------------------+")
-print("a: ", initial_params[0])
-print("Np: ", initial_params[1])
-print("alpha: ", initial_params[2])
+#print("a: ", initial_params[0])
+#print("Np: ", initial_params[1])
+#print("alpha: ", initial_params[2])
 # print("beta: ", initial_params[3])
 print("+------------------+")
 
