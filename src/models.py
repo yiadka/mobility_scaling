@@ -7,11 +7,15 @@ from scipy import stats, special, optimize, integrate
 import random
 
 
-def model_beta(x, a, Np, alpha, beta):
-    f = lambda a: (a**(alpha-1)) * ((1-a)**(beta-1)) / special.beta(alpha, beta)
-    ff = integrate.quad(f, 0, a)[0]
-    func = Np * (1 - ff * ((1 - ((alpha + beta) / alpha) * 2*a*x)/(Np**2-Np))**(Np - 1))
+
+def model_beta(x, alpha, beta):
+    Np = 744
+    f = lambda a: ((a**(alpha-1)) * ((1-a)**(beta-1)) / special.beta(alpha, beta) ) * (1 - (((alpha + beta) / alpha) * 2*a*x[0])/(Np**2-Np))**(Np - 1)
+    ff, _ = integrate.quad(f, 0, 1)  # 積分の値と推定誤差を別々に受け取る
+    func = Np * (1 - ff) 
     return func
+
+
 
 def model_dirichlet(x, a, Np, alpha):
     # ディリクレ分布の確率密度関数
@@ -48,7 +52,7 @@ def calc_M(Np, kappa):
     return (kappa * Np * (Np - 1)) / 8
 
 def calc_kappa(Np, M, alpha, beta):
-    return ((alpha + beta) / alpha)**2 * (2 * M / (Np * (Np - 1)))
+    return (((alpha + beta) / alpha)**2) * (2 * M / (Np * (Np - 1)))
 
 def initial_params_for_dirichlet(edge, node):
     # まずはNpを推定する
