@@ -38,8 +38,13 @@ node_right, edge_right, timestamp_right = pre.return_nm(df_right)
 
 # Npを推定する
 start = time.time()
-# initial_params = md.initial_params_for_dirichlet(edge_right, node_right)
-params, _ = optimize.curve_fit(md.model_dirichlet, xdata=edge_right, ydata=node_right, p0=[[0.5,0.7], 0.5])
+
+initial_params = md.initial_params_for_dirichlet(edge_right, node_right)
+params, _ = optimize.curve_fit(md.model_dirichlet, xdata=edge_right, ydata=node_right, p0=initial_params)
+
+print("+------------------+")
+print("| Done             |")
+print("+------------------+")
 
 Np = params[1]
 kappa = []
@@ -86,7 +91,7 @@ print("| Plotting         |")
 print("+------------------+")
 fig, ax = plt.subplots()
 ax.scatter(node_right, edge_right, label='N-M (right)')
-ax.scatter(N_fit, M_fit, label='Model beta distribution version')
+ax.plot(N_fit, M_fit, label='Model Dirichlet distribution version')
 # 推定値を載せる
 fig.text(0.15, 0.75, r'$\hat{N_p}$: ' + str(Np), size=12, transform=fig.transFigure, ha="left", va="top")
 fig.text(0.15, 0.7, r'$\alpha$: ' + str(alpha), size=12, transform=fig.transFigure, ha="left", va="top")

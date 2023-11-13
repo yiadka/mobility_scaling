@@ -86,7 +86,7 @@ print("| Plotting         |")
 print("+------------------+")
 fig, ax = plt.subplots()
 ax.scatter(node_right, edge_right, label='N-M (right)')
-ax.scatter(N_fit, M_fit, label='Model beta distribution version')
+ax.plot(N_fit, M_fit, label='Model beta distribution version')
 # 推定値を載せる
 fig.text(0.15, 0.75, r'$\hat{N_p}$: ' + str(Np), size=12, transform=fig.transFigure, ha="left", va="top")
 fig.text(0.15, 0.7, r'$\alpha$: ' + str(alpha), size=12, transform=fig.transFigure, ha="left", va="top")
