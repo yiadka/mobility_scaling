@@ -1,3 +1,5 @@
 {
-  "julia.environmentPath": "/Users/yiadka/dev/master_ver2"
+  "julia.environmentPath": "/Users/yiadka/dev/master_ver2",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true
 }
